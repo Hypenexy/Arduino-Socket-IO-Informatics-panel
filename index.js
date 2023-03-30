@@ -22,15 +22,12 @@ io.on('connection', (socket) => {
     });
 });
 
-function sendData(data){
+var data = { "stats" : {} };
+
+function sendData(){
     dataStr = JSON.stringify(data);
     io.emit("data", dataStr);
 }
-
-function eventListenerEmulator(data){
-    sendData(data);
-}
-
 
 server.listen(3000, () => {
     console.log('listening on *:3000');
@@ -50,8 +47,8 @@ function glupost(i){
     if(i === undefined){
         i = 0
     }
-    var data = { stats: { moisture: i } }
-    eventListenerEmulator(data)
+    data.stats.moisture = i
+    sendData()
     setTimeout(() => {
         i++
         glupost(i)

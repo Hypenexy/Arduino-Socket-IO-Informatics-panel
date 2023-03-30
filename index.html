@@ -28,16 +28,24 @@
         informatics.classList.add("informatics")
         app.appendChild(informatics)
 
-        var valueDiv = document.createElement("div")
-        valueDiv.classList.add("info")
-        var desc = document.createElement("p")
-        desc.classList.add("desc")
-        desc.innerText = "Moisture"
-        valueDiv.appendChild(desc)
-        var value = document.createElement("p")
-        value.classList.add("value")
-        valueDiv.appendChild(value)
-        informatics.appendChild(valueDiv)
+        function createStatistic(name){
+            var valueDiv = document.createElement("div")
+            valueDiv.classList.add("info")
+            var desc = document.createElement("p")
+            desc.classList.add("desc")
+            desc.innerText = name
+            valueDiv.appendChild(desc)
+            var value = document.createElement("p")
+            value.setAttribute("name", name)
+            value.classList.add("value")
+            valueDiv.appendChild(value)
+            informatics.appendChild(valueDiv)
+        }
+
+        function updateStatistic(name, value){
+            var valueEl = informatics.querySelector('[name="'+name+'"]')
+            valueEl.innerText = value
+        }
 
         socket.on('connect', () => {
             if(statusEl.classList.length>0){
@@ -74,9 +82,19 @@
             }
         })
 
+        var statsSet = false
         socket.on('data', function(data) {
             data = JSON.parse(data)
-            value.innerHTML = data.stats.moisture
+            var stats = Object.entries(data.stats)
+            if(statsSet==false){
+                for (let i = 0; i < stats.length; i++) {
+                    createStatistic(stats[i][0], stats[i][1])
+                }
+                statsSet = true
+            }
+            for (let i = 0; i < stats.length; i++) {
+                updateStatistic(stats[i][0], stats[i][1])
+            }
         })
     </script>
 </body>

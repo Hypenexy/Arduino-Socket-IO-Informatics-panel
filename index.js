@@ -14,6 +14,10 @@ app.get('/style', (req, res) => {
     res.sendFile(__dirname + '/assets/style.css');
 });
 
+app.get('/light', (req, res) => {
+    res.sendFile(__dirname + '/assets/light.css');
+});
+
 io.on('connection', (socket) => {
     console.log('a user connected');
 
@@ -43,11 +47,14 @@ server.listen(3000, () => {
 //         readline.close();
 // });
 
+data.stats.isCool = true
+data.stats.somethingElse = "that is lotta informacio!"
+
 function glupost(i){
     if(i === undefined){
         i = 0
     }
-    data.stats.moisture = i
+    data.stats.Moisture = i
     sendData()
     setTimeout(() => {
         i++

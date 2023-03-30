@@ -21,6 +21,55 @@
         var statusEl = document.createElement("p")
         statusEl.innerText = "Not connected"
         header.appendChild(statusEl)
+        var clearValues = document.createElement("p")
+        clearValues.innerText = "Clear values"
+        header.appendChild(clearValues)
+        var themeSwitch = document.createElement("p")
+        themeSwitch.innerText = "Light Theme"
+        header.appendChild(themeSwitch)
+        var copyBtn = document.createElement("p")
+        copyBtn.innerText = "Copy JSON"
+        header.appendChild(copyBtn)
+
+        copyBtn.addEventListener("click", function(){
+            var lastText = this.innerText
+            var classToAdd;
+            if(navigator.clipboard.writeText(JSON.stringify(lastStoredData))){
+                this.innerText = "Copied JSON!"
+                classToAdd = "success"
+            }
+            else{
+                this.innerText = "Couldn't copy!"
+                classToAdd = "failure"
+            }
+            this.classList.add(classToAdd)
+            var that = this
+            setTimeout(function() {
+                that.classList.remove(classToAdd)
+                that.innerText = lastText
+            }, 1500);
+        })
+
+        themeSwitch.addEventListener("click", function(){
+            if(this.innerText == "Light Theme"){
+                this.innerText = "Dark Theme"
+                var link = document.createElement("link")
+                link.href = "light"
+                link.type = "text/css"
+                link.rel = "stylesheet"
+                link.media = "screen,print"
+                link.id = "Theme"
+                document.getElementsByTagName("head")[0].appendChild(link)
+            }
+            else{
+                this.innerText = "Light Theme"
+                document.getElementById("Theme").remove()
+            }
+        })
+
+        clearValues.addEventListener("click", function(){
+            clearStatistics()
+        })
 
         var socket = io()
 
@@ -45,6 +94,14 @@
         function updateStatistic(name, value){
             var valueEl = informatics.querySelector('[name="'+name+'"]')
             valueEl.innerText = value
+        }
+
+        function clearStatistics(){
+            var statistics = informatics.children
+            for (let i = 0; i < statistics.length; i++) {
+                statistics[i].remove()
+            }
+            statsSet = false
         }
 
         socket.on('connect', () => {
@@ -82,9 +139,11 @@
             }
         })
 
+        var lastStoredData
         var statsSet = false
         socket.on('data', function(data) {
             data = JSON.parse(data)
+            lastStoredData = data
             var stats = Object.entries(data.stats)
             if(statsSet==false){
                 for (let i = 0; i < stats.length; i++) {

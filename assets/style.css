@@ -1,12 +1,25 @@
 *{margin: 0;outline: 0;font-family: sans-serif;}
 
+:root{
+    --bg: #111;
+    --co: #eee;
+
+    --bg1: #1c1c1c;
+    --bg1h: #252525;
+    --co1: #ddd;
+
+    --co2: #999;
+    
+    --coA: #111;
+}
+
 body{
-    background: #111;
-    color: #eee;
+    background: var(--bg);
+    color: var(--co);
 }
 
 header h1{
-    color: #ddd;
+    color: var(--co1);
     font-size: 26px;
 }
 
@@ -18,38 +31,51 @@ header p{
     user-select: none;
     cursor: pointer;
     display: inline-block;
-    color: #999;
-    background: #1c1c1c;
+    color: var(--co2);
+    background: var(--bg1);
     border-radius: 4px;
     padding: 12px;
+    margin-right: 8px;
+    margin-top: 8px;
     transition: .3s;
 }
+header p:hover{
+    background: var(--bg1h);
+}
 header p.success{
-    color: #111;
+    color: var(--coA);
     background: springgreen;
 }
 header p.failure{
-    color: #111;
+    color: var(--coA);
     background: crimson;
 }
 header p.attempt{
-    color: #111;
+    color: var(--coA);
     background: rgb(255, 236, 62);
 }
 
 .informatics{
+    display: flex;
+    gap: 8px;
     padding: 12px;
 }
 
+@media screen and (max-width: 400px) {
+    .informatics{
+        flex-direction: column
+    }
+}
+
 .info{
-    background: #1c1c1c;
+    background: var(--bg1);
     display: inline-block;
     border-radius: 12px;
     padding: 12px;
 }
 
 .info .desc{
-    color: #999;
+    color: var(--co2);
     font-weight: 700;
     text-align: center;
 }

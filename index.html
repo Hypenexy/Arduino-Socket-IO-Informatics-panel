@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>socketIoComms</title>
+    <link rel="stylesheet" href="style">
+</head>
+<body>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var app = document.createElement("app")
+        document.body.appendChild(app)
+
+        var header = document.createElement("header")
+        app.appendChild(header)
+        var heading = document.createElement("h1")
+        heading.innerText = "Arduino Socket IO Informatics panel"
+        header.appendChild(heading)
+        var statusEl = document.createElement("p")
+        statusEl.innerText = "Not connected"
+        header.appendChild(statusEl)
+
+        var socket = io()
+
+        var informatics = document.createElement("div")
+        informatics.classList.add("informatics")
+        app.appendChild(informatics)
+
+        var valueDiv = document.createElement("div")
+        valueDiv.classList.add("info")
+        var desc = document.createElement("p")
+        desc.classList.add("desc")
+        desc.innerText = "Moisture"
+        valueDiv.appendChild(desc)
+        var value = document.createElement("p")
+        value.classList.add("value")
+        valueDiv.appendChild(value)
+        informatics.appendChild(valueDiv)
+
+        socket.on('connect', () => {
+            if(statusEl.classList.length>0){
+                statusEl.classList.remove(statusEl.classList[0])
+            }
+            statusEl.classList.add("success")
+            statusEl.innerText = "Connected"
+        })
+
+        socket.on('disconnect', () => {
+            if(statusEl.classList.length>0){
+                statusEl.classList.remove(statusEl.classList[0])
+            }
+            statusEl.classList.add("failure")
+            statusEl.innerText = "Disconnected"
+        })
+
+        socket.on('reconnect_attempt', () => {
+            if(statusEl.classList.length>0){
+                statusEl.classList.remove(statusEl.classList[0])
+            }
+            statusEl.classList.add("attempt")
+            statusEl.innerText = "Connecting"
+        })
+
+        statusEl.addEventListener("click", function(){
+            if(statusEl.classList.length>0){
+                if(statusEl.classList[0]=="success"){
+                    socket.disconnect()
+                }
+                else{
+                    socket.connect()
+                }
+            }
+        })
+
+        socket.on('data', function(data) {
+            data = JSON.parse(data)
+            value.innerHTML = data.stats.moisture
+        })
+    </script>
+</body>
+</html>

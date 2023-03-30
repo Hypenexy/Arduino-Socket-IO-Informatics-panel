@@ -1,0 +1,59 @@
+*{margin: 0;outline: 0;font-family: sans-serif;}
+
+body{
+    background: #111;
+    color: #eee;
+}
+
+header h1{
+    color: #ddd;
+    font-size: 26px;
+}
+
+header{
+    padding: 12px;
+}
+
+header p{
+    user-select: none;
+    cursor: pointer;
+    display: inline-block;
+    color: #999;
+    background: #1c1c1c;
+    border-radius: 4px;
+    padding: 12px;
+    transition: .3s;
+}
+header p.success{
+    color: #111;
+    background: springgreen;
+}
+header p.failure{
+    color: #111;
+    background: crimson;
+}
+header p.attempt{
+    color: #111;
+    background: rgb(255, 236, 62);
+}
+
+.informatics{
+    padding: 12px;
+}
+
+.info{
+    background: #1c1c1c;
+    display: inline-block;
+    border-radius: 12px;
+    padding: 12px;
+}
+
+.info .desc{
+    color: #999;
+    font-weight: 700;
+    text-align: center;
+}
+.info .value{
+    display: block;
+    padding: 12px;
+}

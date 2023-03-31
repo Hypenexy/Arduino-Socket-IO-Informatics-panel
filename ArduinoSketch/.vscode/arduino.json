@@ -1,0 +1,7 @@
+{
+    "board": "arduino:avr:uno",
+    "port": "COM3",
+    "programmer": "arduinoasisp",
+    "sketch": "sketch_mar31a.ino",
+    "output": "../ArduinoOutput"
+}

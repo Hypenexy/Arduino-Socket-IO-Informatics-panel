@@ -21,9 +21,9 @@
         var statusEl = document.createElement("p")
         statusEl.innerText = "Not connected"
         header.appendChild(statusEl)
-        var clearValues = document.createElement("p")
-        clearValues.innerText = "Clear Values"
-        header.appendChild(clearValues)
+        // var clearValues = document.createElement("p")
+        // clearValues.innerText = "Clear Values"
+        // header.appendChild(clearValues) Not a good button
         var themeSwitch = document.createElement("p")
         themeSwitch.innerText = "Light Theme"
         header.appendChild(themeSwitch)
@@ -73,9 +73,9 @@
             }, 500);
         })
 
-        clearValues.addEventListener("click", function(){
-            clearStatistics()
-        })
+        // clearValues.addEventListener("click", function(){
+        //     clearStatistics()
+        // })
 
         var socket = io()
 
@@ -147,7 +147,7 @@
 
         var lastStoredData
         var statsSet = false
-        socket.on('data', function(data) {
+        socket.on('initData', function(data) {
             data = JSON.parse(data)
             lastStoredData = data
             var stats = Object.entries(data.stats)
@@ -159,6 +159,16 @@
             }
             for (let i = 0; i < stats.length; i++) {
                 updateStatistic(stats[i][0], stats[i][1])
+            }
+        })
+        socket.on('data', function(data){
+            data = JSON.parse(data)
+            if(data && data.stats){
+                lastStoredData = data
+                var stats = Object.entries(data.stats)
+                for (let i = 0; i < stats.length; i++) {
+                    updateStatistic(stats[i][0], stats[i][1])
+                }
             }
         })
     </script>

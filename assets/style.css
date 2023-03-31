@@ -52,7 +52,7 @@ header p.failure{
 }
 header p.attempt{
     color: var(--coA);
-    background: rgb(255, 236, 62);
+    background: #ffec3e;
 }
 
 .informatics{
@@ -80,6 +80,7 @@ header p.attempt{
     text-align: center;
 }
 .info .value{
+    color: var(--co);
     display: block;
     padding: 12px;
 }

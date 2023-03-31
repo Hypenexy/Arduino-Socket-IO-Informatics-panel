@@ -22,7 +22,7 @@
         statusEl.innerText = "Not connected"
         header.appendChild(statusEl)
         var clearValues = document.createElement("p")
-        clearValues.innerText = "Clear values"
+        clearValues.innerText = "Clear Values"
         header.appendChild(clearValues)
         var themeSwitch = document.createElement("p")
         themeSwitch.innerText = "Light Theme"
@@ -51,6 +51,9 @@
         })
 
         themeSwitch.addEventListener("click", function(){
+            var transitionStyle = document.createElement("style")
+            transitionStyle.innerText = "*{transition: .5s!important}"
+            document.getElementsByTagName("head")[0].appendChild(transitionStyle)
             if(this.innerText == "Light Theme"){
                 this.innerText = "Dark Theme"
                 var link = document.createElement("link")
@@ -65,6 +68,9 @@
                 this.innerText = "Light Theme"
                 document.getElementById("Theme").remove()
             }
+            setTimeout(function() {
+                transitionStyle.remove()
+            }, 500);
         })
 
         clearValues.addEventListener("click", function(){

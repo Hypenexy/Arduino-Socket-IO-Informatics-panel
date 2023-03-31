@@ -47,19 +47,26 @@ server.listen(3000, () => {
 //         readline.close();
 // });
 
-data.stats.isCool = true
-data.stats.somethingElse = "that is lotta informacio!"
+// data.stats.isCool = true
+// data.stats.somethingElse = "that is lotta informacio!"
+// var i = 0;
+// function glupost(){
+//     data.stats.Moisture = i
+//     sendData()
+//     i++
+// }
 
-function glupost(i){
-    if(i === undefined){
-        i = 0
-    }
-    data.stats.Moisture = i
+// setInterval(glupost, 1000)
+
+
+const { SerialPort } = require('serialport');
+const { ReadlineParser } = require('@serialport/parser-readline')
+const port = new SerialPort({ path: 'COM3', baudRate: 128000 })
+
+const parser = port.pipe(new ReadlineParser({ delimiter: '\n' }))
+
+parser.on('data', function(arduinoData){
+    arduinoData = JSON.parse(arduinoData)
+    data.stats = arduinoData
     sendData()
-    setTimeout(() => {
-        i++
-        glupost(i)
-    }, 1000);
-}
-
-glupost()
+})

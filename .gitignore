@@ -105,3 +105,9 @@ dist
 
 #Arduino Libraries
 ArduinoSketch/libraries/
+
+# data logs
+data/*
+
+# keep data folder
+!data/.gitkeep 

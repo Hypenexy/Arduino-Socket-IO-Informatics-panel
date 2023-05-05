@@ -18,18 +18,55 @@
         var heading = document.createElement("h1")
         heading.innerText = "Arduino Socket IO Informatics panel"
         header.appendChild(heading)
-        var statusEl = document.createElement("p")
-        statusEl.innerText = "Not connected"
-        header.appendChild(statusEl)
-        // var clearValues = document.createElement("p")
-        // clearValues.innerText = "Clear Values"
-        // header.appendChild(clearValues) Not a good button
-        var themeSwitch = document.createElement("p")
-        themeSwitch.innerText = "Light Theme"
-        header.appendChild(themeSwitch)
-        var copyBtn = document.createElement("p")
-        copyBtn.innerText = "Copy JSON"
-        header.appendChild(copyBtn)
+        function createButton(innerText){
+            var element = document.createElement("p")
+            element.innerText = innerText 
+            header.appendChild(element)
+            return element
+        }
+        var statusEl = createButton("Not connected");
+        // var clearValues = createButton("Clear Values"); Not a good button
+        var themeSwitch = createButton("Light Theme");
+        var copyBtn = createButton("Copy JSON");
+        var previewData = createButton("Preview Data");
+        
+
+        previewData.addEventListener("click", function(){
+            var modal = document.createElement("div");
+            modal.classList.add("modal");
+            socket.emit('datalog', "list", function(error, message){
+                modal.innerHTML = "<p class='btn'>Close</p>" + message;
+                modal.getElementsByTagName("p")[0].addEventListener("click", function(){
+                    modal.remove();
+                    modal = "";
+                });
+                var files = modal.getElementsByTagName("a");
+                function removeFiles(){
+                    Array.prototype.slice.call(files).forEach(
+                        function(item) {
+                            item.remove();
+                        }
+                    );
+                    for (let i = 0; i < files.length; i++) {
+                        const element = files[i];
+                        element.remove();
+                    }
+                }
+                for (let i = 0; i < files.length; i++) {
+                    const element = files[i];
+                    element.addEventListener("click", function(){
+                        socket.emit('datalog', element.children[0].innerText, function(error, message){
+                            var fileContent = document.createElement("div");
+                            fileContent.innerHTML = message;
+                            modal.appendChild(fileContent);
+                            var filesAgain = modal.getElementsByTagName("a");
+                            removeFiles();
+                        });
+                    });
+                }
+                app.appendChild(modal);
+            });
+        });
 
         copyBtn.addEventListener("click", function(){
             var lastText = this.innerText
